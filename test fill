@@ -1,0 +1,9 @@
+from cmu_graphics import *
+testo = Label('TEST', 100,100, fill = 'red')
+
+def onKeyPress(key):
+    if('space' in key):
+        testo[1].fill = 'green'
+        
+
+cmu_graphics.run()
