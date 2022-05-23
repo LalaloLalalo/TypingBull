@@ -64,7 +64,8 @@ Random()
 
 def onStep():
     rightB.centerX += 0.5
-    app.paused = True
+   # app.paused = True
+    
 
     
 
@@ -72,9 +73,16 @@ def onKeyPress(key):
     if('space' == key):
         app.charIndex = 0
         app.colIndex += 1
-        if(app.colIndex < 0):
-            app.rowIndex -= 1
-            app.colIndex = app.cols - 1
+        if(app.colIndex > app.cols - 1):
+            if(app.rowIndex == app.rows - 1):
+                Rect(-10,220,420,200, fill = 'black', border = 'white', borderWidth = 5)
+                Random()
+                app.rowIndex = 0
+                app.colIndex = 0
+                return
+            
+            app.rowIndex += 1
+            app.colIndex = 0 
         return
 
     
@@ -104,20 +112,25 @@ def onKeyPress(key):
                 else:
                     app.match[app.rowIndex][app.colIndex][app.charIndex].fill = 'red'
                     leftB.centerX += 5
+                    
                 app.charIndex += 1 
                 
 
         else:
             app.rowIndex += 1
             app.colIndex = 0
-    
+    else:
+        app.rowIndex = 0
+        app.colIndex = 0
+        Rect(-10,220,420,200, fill = 'black', border = 'white', borderWidth = 5)
+
     
 
     if('tab' in key):
         Random()
 
-    if('enter' in key):
-        app.paused = False
+    #if('enter' in key):
+       # app.paused = False
 
 
 
