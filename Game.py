@@ -18,7 +18,11 @@ leftB = Image(thisFolder + '/bullleft.png', 255,155, height = 80, width = 110)
 
 rightB = Image(thisFolder + '/bullright.png',55,155, height = 80, width = 110)
 
+pointer = Group(
 
+    Line(50,254,50, 274, fill = 'White' ) 
+
+)
 leftB.rotateAngle = -5
 rightB.rotateAngle = 5
 lables = Group
@@ -73,7 +77,10 @@ def onKeyPress(key):
     if('space' == key):
         app.charIndex = 0
         app.colIndex += 1
+        pointer.centerX = app.match[app.rowIndex][app.colIndex][app.charIndex].centerX - app.match[app.rowIndex][app.colIndex][app.charIndex].width/2
+        pointer.centerY = app.match[app.rowIndex][app.colIndex][app.charIndex].centerY
         if(app.colIndex > app.cols - 1):
+
             if(app.rowIndex == app.rows - 1):
                 Rect(-10,220,420,200, fill = 'black', border = 'white', borderWidth = 5)
                 Random()
@@ -88,11 +95,17 @@ def onKeyPress(key):
     
     if('backspace' == key):
         app.charIndex -= 1
+        pointer.centerX = app.match[app.rowIndex][app.colIndex][app.charIndex].centerX - app.match[app.rowIndex][app.colIndex][app.charIndex].width/2
+        pointer.centerY = app.match[app.rowIndex][app.colIndex][app.charIndex].centerY
         app.match[app.rowIndex][app.colIndex][app.charIndex].fill = 'white'
         if(app.charIndex < 0):
             app.colIndex -= 1
+            pointer.centerX = app.match[app.rowIndex][app.colIndex][app.charIndex].centerX - app.match[app.rowIndex][app.colIndex][app.charIndex].width/2
+            pointer.centerY = app.match[app.rowIndex][app.colIndex][app.charIndex].centerY
             if(app.colIndex < 0):
                 app.rowIndex -= 1
+                pointer.centerX = app.match[app.rowIndex][app.colIndex][app.charIndex].centerX - app.match[app.rowIndex][app.colIndex][app.charIndex].width/2
+                pointer.centerY = app.match[app.rowIndex][app.colIndex][app.charIndex].centerY
                 app.colIndex = app.cols - 1
             app.charIndex = len(app.gameWords[app.rowIndex][app.colIndex]) - 1
             app.match[app.rowIndex][app.colIndex][app.charIndex].fill = 'white'
@@ -112,17 +125,15 @@ def onKeyPress(key):
                 else:
                     app.match[app.rowIndex][app.colIndex][app.charIndex].fill = 'red'
                     leftB.centerX += 5
-                    
-                app.charIndex += 1 
-                
+                pointer.centerX = app.match[app.rowIndex][app.colIndex][app.charIndex].centerX + app.match[app.rowIndex][app.colIndex][app.charIndex].width/2
+                pointer.centerY = app.match[app.rowIndex][app.colIndex][app.charIndex].centerY
+ 
+                app.charIndex += 1                 
 
         else:
             app.rowIndex += 1
             app.colIndex = 0
-    else:
-        app.rowIndex = 0
-        app.colIndex = 0
-        Rect(-10,220,420,200, fill = 'black', border = 'white', borderWidth = 5)
+   
 
     
 
