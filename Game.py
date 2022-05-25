@@ -1,14 +1,16 @@
+from colorsys import ONE_THIRD
 from typing import KeysView
 from cmu_graphics import * 
 import time
 
 app.stepsPerSecond = 60
-app.background = 'pink'
+app.background = 'darkSlateGrey'
 
 Timer = Label('0', 30,25, fill = 'white', size = 40)
 startTime = time.time()
 Timer.stopped = False 
 wpm = Label('0', 360,25, fill = 'white', size = 40)
+wpmText = Label('WPM:', 300, 25, fill = 'white', size = 20 )
 ground = Group(
     
     Rect(-10,220,420,200, fill = 'black', border = 'white', borderWidth = 5)
@@ -31,16 +33,16 @@ leftB.rotateAngle = -5
 rightB.rotateAngle = 5
 lables = Group
 app.engwords = ['from', 
-            'about','their', 'will', 'would',
-            'make', 'just', 'think', 'time',
-            'take', 'year', 'them',
+            'about','their', 'will', 'would','make', 'child', 
+            'make', 'just', 'think', 'time','another',
+            'take', 'year', 'them','still','come',
             'want', 'when', 'which',
             'like', 'other', 'could',
             'into','here', 'then', 'than', 'look',
             'more', 'these', 'thing', 'well', 
-            'also','good',
+            'also','good','system','large',
             'first', 'find', 'give',
-            'need', 'back', 'even', 'possible']
+            'need', 'back', 'even', 'possible','nation','while',]
 
 
 app.rows = 4
@@ -57,7 +59,7 @@ app.match = makeList(app.rows,app.cols)
 def Random():
     for row in range(app.rows):
         for col in range(app.cols):
-            centerX = 56 + col * 65
+            centerX = 61 + col * 65
             if(col != 0):
                 centerX = 20 + app.match[row][col - 1][len(app.match[row][col - 1]) - 1].centerX
             centerY = 270 + row * 30
@@ -73,7 +75,7 @@ Random()
 
 
 def onStep():
-    rightB.centerX += 1
+    rightB.centerX += 0.75
     if(Timer.stopped == False):
         Timer.value = rounded(time.time()-startTime)
     if(rightB.right - 5 >= leftB.left + 5):
@@ -82,9 +84,11 @@ def onStep():
         leftB.left += depth/2
     if(rightB.right <= 0 ):
         Timer.stopped = True
+        
     if(leftB.left >= 400):
         Timer.stopped = True
-        
+
+    
         
     
 
@@ -142,7 +146,7 @@ def onKeyPress(key):
         if(app.colIndex < app.cols):
             if(app.charIndex < len(app.gameWords[app.rowIndex][app.colIndex])):
                 if(app.gameWords[app.rowIndex][app.colIndex][app.charIndex] == key):
-                    app.match[app.rowIndex][app.colIndex][app.charIndex].fill = 'limeGreen'
+                    app.match[app.rowIndex][app.colIndex][app.charIndex].fill = 'gold'
                     leftB.centerX -=10
                 else:
                     app.match[app.rowIndex][app.colIndex][app.charIndex].fill = 'red'
@@ -161,6 +165,7 @@ def onKeyPress(key):
 
     if('tab' in key):
         app.reload()
+
 
     #if('enter' in key):
        # app.paused = False
