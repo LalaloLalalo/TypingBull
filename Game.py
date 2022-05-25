@@ -40,7 +40,7 @@ app.engwords = ['from',
             'more', 'these', 'thing', 'well', 
             'also','good',
             'first', 'find', 'give',
-            'need', 'back', 'even']
+            'need', 'back', 'even', 'possible']
 
 
 app.rows = 4
@@ -58,6 +58,8 @@ def Random():
     for row in range(app.rows):
         for col in range(app.cols):
             centerX = 56 + col * 65
+            if(col != 0):
+                centerX = 20 + app.match[row][col - 1][len(app.match[row][col - 1]) - 1].centerX
             centerY = 270 + row * 30
             randomword = choice(app.engwords)
             app.gameWords[row][col] = randomword
