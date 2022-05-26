@@ -1,4 +1,5 @@
 from colorsys import ONE_THIRD
+from turtle import Turtle
 from typing import KeysView
 from cmu_graphics import * 
 import time
@@ -20,10 +21,27 @@ ground = Group(
 import os
 thisFolder = os.path.dirname(os.path.realpath(__file__))
 
-leftB = Image(thisFolder + '/bullleft.png', 255,155, height = 80, width = 110)
+leftB = Image(thisFolder + '/bullleft.png', 255,152, height = 90, width = 120)
 
-rightB = Image(thisFolder + '/bullright.png',55,155, height = 80, width = 110)
+#leftB2 = Image(thisFolder + '/bullleft2.png', 255,155, height = 90, width = 120)
 
+#leftB3 = Image(thisFolder + '/bullleft3.png', 255,155, height = 90, width = 120)
+
+rightB = Image(thisFolder + '/bullright1.png',55,139, height = 90, width = 120)
+
+rightB2 = Image(thisFolder + '/bullright3.png', 55,139, height = 90, width = 120)
+
+rightB3 = Image(thisFolder + '/bullright2.png', 55,139, height = 90, width = 120)
+
+rightB4 = Image(thisFolder + '/bullright2.png', 55,139, height = 90, width = 120)
+
+rightB.visible = True
+rightB2.visible = False
+rightB3.visible = False
+rightB4.visible = False
+
+
+rightBSpeed = 0.35
 pointer = Group(
 
     Line(50,254,50, 274, fill = 'White' ) 
@@ -31,7 +49,12 @@ pointer = Group(
 )
 leftB.rotateAngle = -5
 rightB.rotateAngle = 5
+rightB2.rotateAngle = 5
+rightB3.rotateAngle = 5
+rightB4.rotateAngle = 5
 lables = Group
+app.counter = 0
+betweenCount = 5
 app.engwords = ['from', 
             'about','their', 'will', 'would','make', 'child', 
             'make', 'just', 'think', 'time','another',
@@ -42,7 +65,7 @@ app.engwords = ['from',
             'more', 'these', 'thing', 'well', 
             'also','good','system','large',
             'first', 'find', 'give',
-            'need', 'back', 'even', 'possible','nation','while',]
+            'need', 'back', 'even','nation','while',]
 
 
 app.rows = 4
@@ -53,7 +76,7 @@ app.gameWords = makeList(app.rows, app.cols)
 app.rowIndex = 0
 app.colIndex = 0
 app.charIndex = 0
-
+prevX = 0
 app.match = makeList(app.rows,app.cols)
 
 def Random():
@@ -75,13 +98,56 @@ Random()
 
 
 def onStep():
-    rightB.centerX += 0.75
+    prevX = rightB.centerX 
+    rightB.centerX += rightBSpeed
+    rightB2.centerX += rightBSpeed
+    rightB3.centerX += rightBSpeed
+    rightB4.centerX += rightBSpeed
+    app.counter += 1
+    if(app.counter == betweenCount):
+        app.counter= 0
+        if(rightB.visible == True):
+            rightB.visible = False
+            rightB2.visible = True
+        elif(rightB2.visible == True):
+            rightB2.visible = False
+            rightB3.visible = True
+        elif(rightB3.visible == True):
+            rightB3.visible = False
+            rightB4.visible = True
+        elif(rightB4.visible == True):
+            rightB4.visible = False
+            rightB.visible = True
+   
     if(Timer.stopped == False):
         Timer.value = rounded(time.time()-startTime)
     if(rightB.right - 5 >= leftB.left + 5):
         depth = (rightB.right - 5) - (leftB.left + 5)
         rightB.right -= depth/2
         leftB.left += depth/2
+
+    if(rightB2.right - 5 >= leftB.left + 5):
+        depth = (rightB2.right - 5) - (leftB.left + 5)
+        rightB2.right -= depth/2
+        leftB.left += depth/2
+
+    if(rightB3.right - 5 >= leftB.left + 5):
+        depth = (rightB3.right - 5) - (leftB.left + 5)
+        rightB3.right -= depth/2
+        leftB.left += depth/2
+    
+    if(rightB4.right - 5 >= leftB.left + 5):
+        depth = (rightB4.right - 5) - (leftB.left + 5)
+        rightB4.right -= depth/2
+        leftB.left += depth/2
+
+    if(prevX > rightB.centerX):
+       rightB.visible = True
+       rightB2.visible = False
+       rightB3.visible = False
+       rightB4.visible = False
+
+        
     if(rightB.right <= 0 ):
         Timer.stopped = True
         
@@ -106,7 +172,23 @@ def onKeyPress(key):
                 Random()
                 app.rowIndex = 0
                 app.colIndex = 0
+
+                rightB.visible = True
+                rightB2.visible = True
+                rightB3.visible = True
+                rightB4.visible = True
+
                 pointer.toFront()
+                rightB.toFront()
+                rightB2.toFront()
+                rightB3.toFront()
+                rightB4.toFront()
+
+                rightB.visible = True
+                rightB2.visible = False
+                rightB3.visible = False
+                rightB4.visible = False
+
                 return
             
             app.rowIndex += 1
@@ -136,11 +218,7 @@ def onKeyPress(key):
                 app.charIndex = len(app.gameWords[app.rowIndex][app.colIndex]) - 1
                 app.match[app.rowIndex][app.colIndex][app.charIndex].fill = 'white'
                 
-
-
         return
-
-        
 
     if(app.rowIndex < app.rows):
         if(app.colIndex < app.cols):
@@ -148,6 +226,7 @@ def onKeyPress(key):
                 if(app.gameWords[app.rowIndex][app.colIndex][app.charIndex] == key):
                     app.match[app.rowIndex][app.colIndex][app.charIndex].fill = 'gold'
                     leftB.centerX -=10
+                    
                 else:
                     app.match[app.rowIndex][app.colIndex][app.charIndex].fill = 'red'
                     leftB.centerX += 5
