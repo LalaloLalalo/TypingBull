@@ -21,11 +21,14 @@ ground = Group(
 import os
 thisFolder = os.path.dirname(os.path.realpath(__file__))
 
-leftB = Image(thisFolder + '/bullleft.png', 255,152, height = 90, width = 120)
+leftB = Image(thisFolder + '/bullleft1.png', 255,139, height = 90, width = 120)
 
-#leftB2 = Image(thisFolder + '/bullleft2.png', 255,155, height = 90, width = 120)
+leftB2 = Image(thisFolder + '/bullleft3.png', 255,139, height = 90, width = 120)
 
-#leftB3 = Image(thisFolder + '/bullleft3.png', 255,155, height = 90, width = 120)
+leftB3 = Image(thisFolder + '/bullleft2.png', 255,139, height = 90, width = 120)
+
+leftB4 = Image(thisFolder + '/bullleft2.png', 255,139, height = 90, width = 120)
+
 
 rightB = Image(thisFolder + '/bullright1.png',55,139, height = 90, width = 120)
 
@@ -40,18 +43,29 @@ rightB2.visible = False
 rightB3.visible = False
 rightB4.visible = False
 
+leftB.visible = True
+leftB2.visible = False
+leftB3.visible = False
+leftB4.visible = False
+
 
 rightBSpeed = 0.35
+leftBSpeed = 0.35
 pointer = Group(
 
     Line(50,254,50, 274, fill = 'White' ) 
 
 )
-leftB.rotateAngle = -5
+
 rightB.rotateAngle = 5
 rightB2.rotateAngle = 5
 rightB3.rotateAngle = 5
 rightB4.rotateAngle = 5
+leftB.rotateAngle = -5
+leftB2.rotateAngle = -5
+leftB3.rotateAngle = -5
+leftB4.rotateAngle = -5
+
 lables = Group
 app.counter = 0
 betweenCount = 5
@@ -98,12 +112,20 @@ Random()
 
 
 def onStep():
+    prevX = leftB.centerX
+    
+    leftB.centerX -= leftBSpeed
+    leftB2.centerX -= leftBSpeed
+    leftB3.centerX -= leftBSpeed
+    leftB4.centerX -= leftBSpeed
+    
     prevX = rightB.centerX 
     rightB.centerX += rightBSpeed
     rightB2.centerX += rightBSpeed
     rightB3.centerX += rightBSpeed
     rightB4.centerX += rightBSpeed
     app.counter += 1
+    
     if(app.counter == betweenCount):
         app.counter= 0
         if(rightB.visible == True):
@@ -118,6 +140,19 @@ def onStep():
         elif(rightB4.visible == True):
             rightB4.visible = False
             rightB.visible = True
+
+        if(leftB.visible == True):
+            leftB.visible = False
+            leftB2.visible = True
+        elif(leftB2.visible == True):
+            leftB2.visible = False
+            leftB3.visible = True
+        elif(leftB3.visible == True):
+            leftB3.visible = False
+            leftB4.visible = True
+        elif(leftB4.visible == True):
+            leftB4.visible = False
+            leftB.visible = True
    
     if(Timer.stopped == False):
         Timer.value = rounded(time.time()-startTime)
@@ -141,11 +176,23 @@ def onStep():
         rightB4.right -= depth/2
         leftB.left += depth/2
 
+    
+    
+    
+    
+    
+
     if(prevX > rightB.centerX):
        rightB.visible = True
        rightB2.visible = False
        rightB3.visible = False
        rightB4.visible = False
+
+    if(prevX > leftB.centerX):
+        leftB.visible = True
+        leftB2.visible = False
+        leftB3.visible = False
+        leftB4.visible = False
 
         
     if(rightB.right <= 0 ):
@@ -241,19 +288,5 @@ def onKeyPress(key):
    
 
     
-
-    if('tab' in key):
-        app.reload()
-
-
-    #if('enter' in key):
-       # app.paused = False
-
-
-
-    
-    
-
-
 
 cmu_graphics.run()
