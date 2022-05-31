@@ -9,10 +9,12 @@ app.background = 'darkSlateGrey'
 
 Timer = Label('0', 30,25, fill = 'white', size = 40)
 startTime = time.time()
-Timer.stopped = False 
+Timer.stopped = False
+app.totalChars = 0
 wpm = Label('0', 360,25, fill = 'white', size = 40)
 wpmText = Label('WPM:', 300, 25, fill = 'white', size = 20 )
 ground = Group(
+
     
     Rect(-10,220,420,200, fill = 'black', border = 'white', borderWidth = 5)
 
@@ -38,11 +40,17 @@ rightB3 = Image(thisFolder + '/bullright2.png', 55,139, height = 90, width = 120
 
 rightB4 = Image(thisFolder + '/bullright2.png', 55,139, height = 90, width = 120)
 
+rightbullwin = Image(thisFolder + '/rightbullwin.png', 23,0, height = 400, width = 350)
+rightw = Rect(0,0,400,400, fill = 'white')
+rightlabel = Label('Ur Dead',200,350, fill = 'red', size = 40, font = 'robotomono')
+
 rightB.visible = True
 rightB2.visible = False
 rightB3.visible = False
 rightB4.visible = False
-
+rightbullwin.visible = False
+rightlabel.visible = False
+rightw.visible = False
 leftB.visible = True
 leftB2.visible = False
 leftB3.visible = False
@@ -53,7 +61,7 @@ rightBSpeed = 0.35
 leftBSpeed = 0.35
 pointer = Group(
 
-    Line(50,254,50, 274, fill = 'White' ) 
+    Line(52,254,52, 274, fill = 'White' ) 
 
 )
 
@@ -68,7 +76,9 @@ leftB4.rotateAngle = -5
 
 lables = Group
 app.counter = 0
-betweenCount = 5
+app.wpmcounter = 0
+betweenwpm = 3
+betweenCount = 1.5
 app.engwords = ['from', 
             'about','their', 'will', 'would','make', 'child', 
             'make', 'just', 'think', 'time','another',
@@ -125,6 +135,7 @@ def onStep():
     rightB3.centerX += rightBSpeed
     rightB4.centerX += rightBSpeed
     app.counter += 1
+    app.wpmcounter += 1
     
     if(app.counter == betweenCount):
         app.counter= 0
@@ -141,7 +152,7 @@ def onStep():
             rightB4.visible = False
             rightB.visible = True
 
-        if(leftB.visible == True):
+        '''if(leftB.visible == True):
             leftB.visible = False
             leftB2.visible = True
         elif(leftB2.visible == True):
@@ -152,7 +163,7 @@ def onStep():
             leftB4.visible = True
         elif(leftB4.visible == True):
             leftB4.visible = False
-            leftB.visible = True
+            leftB.visible = True'''
    
     if(Timer.stopped == False):
         Timer.value = rounded(time.time()-startTime)
@@ -201,6 +212,16 @@ def onStep():
     if(leftB.left >= 400):
         Timer.stopped = True
 
+        rightbullwin.visible = True
+        rightw.visible = True
+        rightlabel.visible = True
+        rightw.toFront()
+        rightbullwin.toFront()
+        rightlabel.toFront()
+
+    if(app.wpmcounter == betweenwpm):
+        app.wpmcounter = 0
+        wpm.value = rounded(((app.totalChars/5)/(time.time() - startTime))*60)
     
         
     
@@ -271,6 +292,7 @@ def onKeyPress(key):
         if(app.colIndex < app.cols):
             if(app.charIndex < len(app.gameWords[app.rowIndex][app.colIndex])):
                 if(app.gameWords[app.rowIndex][app.colIndex][app.charIndex] == key):
+                    app.totalChars += 1
                     app.match[app.rowIndex][app.colIndex][app.charIndex].fill = 'gold'
                     leftB.centerX -=10
                     
