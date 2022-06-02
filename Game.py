@@ -387,9 +387,6 @@ def onMousePress(mouseX,mouseY):
             app.divide = 80
             app.startTime = time.time()
 
-            if(Timer == 60):
-                app.divide = 140
-        
 def onKeyPress(key):
     if key == key:
         notyou.visible = False
