@@ -307,9 +307,9 @@ Random()
 
 def onStep():
     if app.start == True:
-        speed()
-        animation()
         collison()
+        animation()
+        speed()
         onstepwpm()
 
 def onMouseMove(mouseX,mouseY):
